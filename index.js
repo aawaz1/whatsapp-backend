@@ -1,13 +1,14 @@
 import app from './app.js'
+import logger from './config/logger.config.js';
 
 
 
 
-// PORT
+// env variables
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT , (req,res) => {
-   console.log('port is running on : ' , PORT);
+   logger.info(`port is running on ${process.env.PORT}`);
 })
 
 
