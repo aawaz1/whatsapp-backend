@@ -35,7 +35,7 @@ export const createUser = async (userData) => {
     // check if user already exists
     const checkDb = await User.findOne({email});
     if(checkDb){
-        throw createHttpError.BadRequest("Please try again with email since it already exists");
+        throw createHttpError.BadRequest("Please try again with other email since it already exists");
     }
 
     // check password length

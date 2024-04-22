@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from 'bcrypt';
 
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name : ({
         type : String,
         required : [ true , "Please provide a Name"],
@@ -42,7 +42,7 @@ const UserSchema = new mongoose.Schema({
   })
 
 
-  UserSchema.pre('save' , async function(next){
+  userSchema.pre('save' , async function(next){
     try {
         if(this.isNew){
             const salt = await bcrypt.genSalt(12);
@@ -58,8 +58,8 @@ const UserSchema = new mongoose.Schema({
   })
 
 
- const User = mongoose.model("User" , UserSchema);
+  const UserModel = mongoose.models.UserModel || mongoose.model("userModel" ,userSchema);
 
 
-export default  User;
+export default  UserModel;
 
