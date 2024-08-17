@@ -9,9 +9,7 @@ router.route("/register").post(trimRequest.all ,register);
 router.route("/login").post(trimRequest.all ,login);
 router.route("/logout").post(trimRequest.all ,logout);
 router.route("/refreshtoken").post(trimRequest.all ,refreshToken);
-router.route("/authmiddleware").get(trimRequest.all,authMiddleware ,(req,res) => {
-res.send(req.user);
-});
+
 
 
 export default router;

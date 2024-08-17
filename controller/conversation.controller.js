@@ -44,8 +44,13 @@ export const getAllConversation = async (req,res,next) => {
     try {
 
         const user_id = req.user.userId;
+        
         const conversations = await getUsersConversations(user_id);
-        res.status(200).json(conversations);        
+        if (!conversations || conversations.length === 0) {
+            return res.status(404).json({ message: "User not found" });
+          }
+        res.status(200).json(conversations);  
+          
     } catch (error) {
         
     }

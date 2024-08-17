@@ -45,7 +45,7 @@ app.use(compression());
 app.use(fileUpload({useTempFiles : true}));
 
 // cors
-app.use(cors({origin : "http://localhost:3001"}));
+app.use(cors({origin : "http://localhost:3000"}));
 
 // v1 routes
 
