@@ -73,10 +73,38 @@ export const getAllConversation = async (req, res, next) => {
 
         return res.status(200).json(conversations);  
     } catch (error) {
+        next(error);
         console.error(error);
         return res.status(500).json({ message: "An error occurred while fetching conversations" });
     }
 };
+export const createGroup = async (req, res, next) => {
+    const {name , users} = req.body
+    // add current user to users
+    users.push(req.user.userId)
+    if(!name || !users){
+        throw createHttpError.BadRequest("Please Fill All Fields")
+
+    }
+
+    if(users.length < 2){
+        throw createHttpError.BadRequest("Atleast 2 Users are Required to start Group Chat")
+    }
+
+    let convoData = {name,users,isGroup :true , admin : req.user.userId , picture : process.env.PICTURE}
+    try {
+        const newConvo = await createConversation(convoData);
+        const populatedConvo = await populateConversation(newConvo._id , "users admin" , "-password")
+        console.log(populatedConvo);
+        res.status(200).json({data: populatedConvo})
+         
+    }
+     catch (error) {
+        next(error);
+        return res.status(500).json({ message: "An error occurred while fetching conversations" });
+    }
+};
+
 
 
   
