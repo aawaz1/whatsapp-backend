@@ -5,7 +5,7 @@ const {ObjectId} = mongoose.Schema.Types;
 const messageSchema = mongoose.Schema({
     sender :{
         type : ObjectId,
-        ref : "UserModel"
+        ref : "userModel"
     } ,
     message : {
         type : String,
@@ -13,7 +13,7 @@ const messageSchema = mongoose.Schema({
     },
     conversation : {
         type : ObjectId,
-        ref : "ConversationSchema"
+        ref : "ConversationModel"
     },
 
     files : [],

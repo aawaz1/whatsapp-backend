@@ -1,12 +1,15 @@
 import mongoose from 'mongoose';
 import app from './app.js'
 import logger from './config/logger.config.js';
+import SocketServer from './SocketServer.js';
 
 
 
 
 // env variables
 const {DATABASE_URL} = process.env;
+import { Server } from "socket.io";
+import { sendMessage } from './controller/message.controller.js';
 const PORT = process.env.PORT || 8000;
 
 // exit on mongodb error
@@ -34,6 +37,25 @@ server = app.listen(PORT , () => {
    // console.log("pid" , process.pid);
    // throw new Error('Error in serveer');
 })
+
+
+// socket io
+ const io = new Server(server ,{
+   pingTimeout : 6000,
+   cors : {
+      origin : process.env.CLIENT_ENDPOINT
+   }
+ });
+
+
+ io.on("connection",(socket) => {
+
+
+   logger.info("socket io is connected successfully");
+   SocketServer(socket , io);
+  
+
+ } )
 
 
 // handle server errors

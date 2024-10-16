@@ -40,19 +40,43 @@ export const create_open_conversation = async (req, res, next) => {
 };
 
 
-export const getAllConversation = async (req,res,next) => {
-    try {
+// export const getAllConversation = async (req,res,next) => {
+//     try {
 
-        const user_id = req.user.userId;
+//         const user_id = req.user.userId;
         
-        const conversations = await getUsersConversations(user_id);
-        if (!conversations || conversations.length === 0) {
-            return res.status(404).json({ message: "User not found" });
-          }
-        res.status(200).json(conversations);  
+//         const conversations = await getUsersConversations(user_id);
+//         if (!conversations || conversations.length === 0) {
+//             return res.status(404).json({ message: "User not found" });
+//           }
+//         res.status(200).json(conversations);  
           
-    } catch (error) {
+//     } catch (error) {
+//         console.log(error);
         
-    }
+//     }
 
-}
+// }
+
+
+export const getAllConversation = async (req, res, next) => {
+    try {
+        const user_id = req.user.userId;
+        console.log(user_id);
+        const conversations = await getUsersConversations(user_id);
+        console.log(2)
+
+
+        if (!conversations || conversations.length === 0) {
+            return res.status(404).json({ message: "No conversations found" });
+        }
+
+        return res.status(200).json(conversations);  
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "An error occurred while fetching conversations" });
+    }
+};
+
+
+  

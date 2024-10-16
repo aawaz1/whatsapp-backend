@@ -11,7 +11,7 @@ export const searchUsers = async(req,res,next) => {
         }
 
         const users = await searchUsersService(keyword);
-        res.status(200).json({users});
+        res.status(200).json(users);
         
     } catch (error) {
         next(error);

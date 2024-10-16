@@ -1,5 +1,6 @@
 
 import { ConversationModel, userModel } from "../models/index.js"
+import mongoose from "mongoose"
 import createHttpError from "http-errors"
 
  export const doesConversationExist = async(sender_id , receiver_id) => {
@@ -10,18 +11,18 @@ import createHttpError from "http-errors"
             
         ]
     }).populate("users" , "-password")
-    // .populate("latestMessage")
+    .populate("latestMessage")
 
     if(!convos) throw createHttpError.BadRequest("Oops Something Went Wrong!");
 
     // populate message model
 
-//     convos = await userModel.populate(convos , {
-//         path : "latestMessage.sender",
-//         select : "name email picture status"
-//     })
+    convos = await userModel.populate(convos , {
+        path : "latestMessage.sender",
+        select : "name email picture status"
+    })
 
-//   return convos[0];
+  return convos[0];
  }
 
  export const createConversation = async(data) => {
@@ -45,19 +46,40 @@ import createHttpError from "http-errors"
 
 
  export const getUsersConversations = async (user_id) => {
-    let conversations;
-    await ConversationModel.find({users : {$elemMatch : {$eq : user_id}} }).
-    populate("users", "-password")
-    .populate("admin" ,"-password")
-    // .populate("latestMessage")
-    .sort({updatedAt : -1})
-    .then(async(results) => {
-        results = await userModel.populate(results , {
-            // path : "latestMessage.sender",
-            select : "name email picture , status ",
-        });
-        conversations = results;
-    }).catch((err) => {
-throw createHttpError.BadRequest("Opps Something  Went Wrong")})
+    try {
+      return await ConversationModel.find({ users: { $elemMatch: { $eq: user_id } } })
+        .populate("users", "-password")
+        .populate("latestMessage")
+        .sort({ updatedAt: -1 });  // Ensure it returns the conversations ordered
+    } catch (error) {
+      console.error("Error fetching conversations:", error);
+      throw error;
+    }
+  };
 
- }
+
+// export const getUsersConversations = async (user_id) => {
+//     try {
+//         // Ensure the user_id is a valid ObjectId
+//         if (!mongoose.Types.ObjectId.isValid(user_id)) {
+//             throw createHttpError.BadRequest("Invalid User ID");
+//         }
+
+//         // Convert user_id to ObjectId
+//         const userObjectId = new mongoose.Types.ObjectId(user_id);
+//         console.log("User ID:", user_id);
+//         console.log("Constructed Query:", { users: { $elemMatch: { $eq: userObjectId } } });
+
+//         // Find conversations involving the user
+//         let conversations = await ConversationModel.find({ users: { $elemMatch: { $eq: userObjectId } } })
+//             .populate("users", "name email picture status") // Include only the specified fields
+//             .populate("admin", "name email picture status")  // Include only the specified fields
+//             .sort({ updatedAt: -1 });
+
+//         return conversations;
+//     } catch (err) {
+//         console.error("Error in getUsersConversations:", err);
+//         throw createHttpError.InternalServerError("Oops! Something Went Wrong");
+//     }
+// };
+

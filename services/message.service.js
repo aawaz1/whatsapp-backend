@@ -51,7 +51,12 @@ export const updateLatestMessage = async(convo_id , msg) => {
 export const getConvoMessages = async(convo_id) => {
 
     try {
-      const message =   await MessageModel.find({conversation : convo_id})
+        const message = 
+        // [
+        //     { message: "hello1" },
+        //     { message: "hello2" }
+        //   ];
+      await MessageModel.find({conversation : convo_id})
       .populate("sender",
     "name picture email status").populate("conversation")
 

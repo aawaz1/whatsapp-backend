@@ -8,7 +8,6 @@ const conversationSchema = mongoose.Schema({
     },
     picture : {
         type :String,
-        required : true,
         
 
     },
@@ -21,11 +20,11 @@ const conversationSchema = mongoose.Schema({
         type : ObjectId,
         ref : 'userModel'
     }], 
-    latestMessage : [
+    latestMessage : 
        { type : ObjectId,
         ref : "MessageModel",
     }
-    ],
+    ,
     admin :{
         type : ObjectId,
         ref :"userModel",
