@@ -45,7 +45,9 @@ app.use(compression());
 app.use(fileUpload({useTempFiles : true}));
 
 // cors
-app.use(cors({origin : "http://localhost:3000"}));
+    app.use(cors({
+        origin: ["http://localhost:3001", "https://whatsapp-frontend-umber-mu.vercel.app/login"],
+      }));
 
 // v1 routes
 
